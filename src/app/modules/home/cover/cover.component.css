@@ -1,0 +1,10 @@
+.image-cover{
+  filter: brightness(40%);
+  max-height: 750px;
+  width: 100%;
+}
+.cover-content{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
