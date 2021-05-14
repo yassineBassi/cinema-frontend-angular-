@@ -1,0 +1,97 @@
+<div class="row py-3 px-2">
+  <div class="col-2">
+    <div class="card bg-dark text-white">
+      <div class="card-header ps-0 pt-1">
+        <h4>Liste des Villes</h4>
+      </div>
+      <hr *ngIf="!cinemas" class="p-0 m-0">
+      <div class="card-body p-0">
+        <ul class="list-group border-end border-secondary">
+          <li
+            *ngFor="let ville of villes"
+            class="list-group-item list-group-item-action text-white pe-1 py-3"
+            [class.active]="ville == currentVille"
+            (click)="getCinemas(ville)"
+          >
+            {{ ville.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-10 ps-1">
+    <div class="card bg-dark text-white">
+      <div class="card-header ps-0 pt-1">
+        <h4>Liste des Cinemas</h4>
+      </div>
+      <hr *ngIf="!cinemas" class="p-0 m-0">
+      <div class="card-body p-0">
+        <nav
+          *ngIf="cinemas"
+          class="nav nav-pills flex-column flex-sm-row"
+        >
+          <a
+            *ngFor="let cinema of cinemas"
+            [class.active]="currentCinema == cinema"
+            class="flex-sm-fill text-sm-center nav-link bg-secondary text-white"
+            (click)="getSalles(cinema)"
+          >
+            {{ cinema.name }}
+          </a>
+        </nav>
+        <div class="row mt-3" *ngIf="salles">
+          <div
+            *ngFor="let salle of salles"
+            class="col-6"
+          >
+          <div class="card bg-dark">
+            <div class="card-header bg-secondary">
+              {{ salle.name }}
+            </div>
+              <div class="card-body px-0">
+                <div class="row" *ngIf="salle.projections && salle.projections[0]">
+                  <div class="col-6">
+                    <img class="w-100" [src]="getFilmImage(salle.projections[0].film)" alt="">
+                  </div>
+                  <div class="col-6">
+                    <ul class="list-group text-center">
+                      <li
+                        class="list-group-item seance list-group-item-action text-white disabled pe-1"
+                      >
+                        Les Séances
+                      </li>
+                      <li
+                        *ngFor="let projection of salle.projections"
+                        (click)="getTickets(salle, projection)"
+                        [class.active]="currentSalle == salle && currentProjection == projection"
+                        class="list-group-item seance list-group-item-action text-white pe-1"
+                      >
+                        <div class="d-flex justify-content-between">
+                          {{ projection.seance.heurDebut | date: 'HH:mm:ss a' }}
+                          <i class="fas fa-arrow-right"></i>
+                          {{ projection.prix | number: '1.2'}} DH
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="mt-2 mx-auto text-center" *ngIf="currentSalle == salle">
+                      <button
+                        *ngFor="let ticket of currentProjection.tickets"
+                        [class]="[(ticket.reserve ? 'btn-danger' : (selectedTickets.includes(ticket.id) ? 'btn-primary'
+                        : 'btn-success'))]"
+                        (click)="selectTicket(ticket.id)"
+                        [disabled]="ticket.reserve"
+                        class="btn m-2"
+                      >
+                        {{ ticket.place.numero }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

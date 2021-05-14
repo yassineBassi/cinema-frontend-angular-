@@ -1,0 +1,5 @@
+{
+    "angular.enable-strict-mode-prompt": false,
+    "typescript.validate.enable": false,
+    "tslint.jsEnable": false
+}
