@@ -31,4 +31,8 @@ export class CinemaService {
     return this.http.get(projection.links.places.hre);
   }
 
+  payerTicket(data){
+    return this.http.post(this.url + '/tickets/payer', data);
+  }
+
 }

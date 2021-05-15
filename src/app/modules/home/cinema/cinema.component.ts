@@ -1,6 +1,6 @@
 import { CinemaService } from './../../../services/cinema.service';
 import { DataService } from './../../../services/data.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-cinema',
@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cinema.component.css']
 })
 export class CinemaComponent implements OnInit {
+
+  @ViewChild('closeModal') closeModal: ElementRef;
 
   villes: any[];
   cinemas: any[];
@@ -62,23 +64,24 @@ export class CinemaComponent implements OnInit {
         this.salles = [];
         const salles = resp._embedded.salles;
         salles.forEach(salle => {
-          this.cinemaService.getProjection(salle)
-          .subscribe(
-            (resp: any) => {
-              console.log("salle ", salle);
-              salle.projections = resp._embedded.projections;
-              this.salles.push(salle);
-            },
-            err =>{
-              console.log(err);
-            }
-          )
+          this.salles.push(salle);
+          this.getProjections(salle);
         })
-        // this.currentCinema = this.cinemas[0];
       },
       err =>{
         console.log(err);
+      }
+    )
+  }
 
+  getProjections(salle){
+    this.cinemaService.getProjection(salle)
+    .subscribe(
+      (resp: any) => {
+        salle.projections = resp._embedded.projections;
+      },
+      err =>{
+        console.log(err);
       }
     )
   }
@@ -89,14 +92,33 @@ export class CinemaComponent implements OnInit {
 
   getTickets(salle, projection){
     this.currentSalle = salle;
+    this.selectedTickets = [];
     this.currentProjection = projection;
   }
 
-  selectTicket(id: any){
-    if(!this.selectedTickets.includes(id))
-      this.selectedTickets.push(id);
+  selectTicket(ticket){
+    if(!this.selectedTickets.includes(ticket))
+      this.selectedTickets.push(ticket);
     else
-      this.selectedTickets.splice(this.selectedTickets.indexOf(id), 1)
+      this.selectedTickets.splice(this.selectedTickets.indexOf(ticket), 1)
+  }
+
+  payerTicket(form){
+    console.log(form.value);
+    this.cinemaService.payerTicket({
+      ...form.value,
+      tickets: this.selectedTickets.map(ticket => ticket.id)
+    })
+    .subscribe(
+      (resp: any) => {
+          this.selectedTickets.forEach(ticket => ticket.reserve = true)
+          this.selectedTickets = [];
+          this.closeModal.nativeElement.click();
+      },
+      err =>{
+        console.log(err);
+      }
+    )
   }
 
 }

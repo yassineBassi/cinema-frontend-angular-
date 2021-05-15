@@ -1,12 +1,8 @@
-<div class="row py-3 px-2">
-  <div class="col-2">
-    <div class="card bg-dark text-white">
-      <div class="card-header ps-0 pt-1">
-        <h4>Liste des Villes</h4>
-      </div>
-      <hr *ngIf="!cinemas" class="p-0 m-0">
-      <div class="card-body p-0">
-        <ul class="list-group border-end border-secondary">
+<div class="row row-eq-height py-3 px-2">
+  <div class="col-12 col-xl-2">
+    <div class="card h-100 bg-dark text-white">
+      <div class="card-body h-100 p-0">
+        <ul class="list-group h-100 border-end border-secondary">
           <li
             *ngFor="let ville of villes"
             class="list-group-item list-group-item-action text-white pe-1 py-3"
@@ -19,13 +15,10 @@
       </div>
     </div>
   </div>
-  <div class="col-10 ps-1">
+  <div class="col-12 col-xl-10">
     <div class="card bg-dark text-white">
-      <div class="card-header ps-0 pt-1">
-        <h4>Liste des Cinemas</h4>
-      </div>
-      <hr *ngIf="!cinemas" class="p-0 m-0">
-      <div class="card-body p-0">
+      <div class="card-bodyp-0">
+        <h2 class="ms-1 py-2 d-sm-none">Liste des Cinemas</h2>
         <nav
           *ngIf="cinemas"
           class="nav nav-pills flex-column flex-sm-row"
@@ -42,7 +35,7 @@
         <div class="row mt-3" *ngIf="salles">
           <div
             *ngFor="let salle of salles"
-            class="col-6"
+            class="col-12 col-lg-6"
           >
           <div class="card bg-dark">
             <div class="card-header bg-secondary">
@@ -50,40 +43,52 @@
             </div>
               <div class="card-body px-0">
                 <div class="row" *ngIf="salle.projections && salle.projections[0]">
-                  <div class="col-6">
+                  <div class="col-12 col-sm-6">
                     <img class="w-100" [src]="getFilmImage(salle.projections[0].film)" alt="">
                   </div>
-                  <div class="col-6">
+                  <div class="col-12 col-sm-6">
                     <ul class="list-group text-center">
                       <li
-                        class="list-group-item seance list-group-item-action text-white disabled pe-1"
+                        class="list-group-item seance list-group-item-action text-white disabled"
                       >
                         Les Séances
                       </li>
                       <li
                         *ngFor="let projection of salle.projections"
                         (click)="getTickets(salle, projection)"
-                        [class.active]="currentSalle == salle && currentProjection == projection"
-                        class="list-group-item seance list-group-item-action text-white pe-1"
+                        [class.active]="currentSalle == salle && currentProjection.id == projection.id"
+                        class="list-group-item seance list-group-item-action text-white"
                       >
-                        <div class="d-flex justify-content-between">
-                          {{ projection.seance.heurDebut | date: 'HH:mm:ss a' }}
-                          <i class="fas fa-arrow-right"></i>
-                          {{ projection.prix | number: '1.2'}} DH
+                        <div class="row">
+                          <div class="col-5">
+                            {{ projection.seance.heurDebut | date: 'HH:mm:ss a' }}
+                          </div>
+                          <div class="col-2">
+                            <i class="fas fa-arrow-right"></i>
+                          </div>
+                          <div class="col-5">
+                            {{ projection.prix | number: '1.2'}} DH
+                          </div>
                         </div>
                       </li>
                     </ul>
                     <div class="mt-2 mx-auto text-center" *ngIf="currentSalle == salle">
                       <button
                         *ngFor="let ticket of currentProjection.tickets"
-                        [class]="[(ticket.reserve ? 'btn-danger' : (selectedTickets.includes(ticket.id) ? 'btn-primary'
+                        [class]="[(ticket.reserve ? 'btn-danger' : (selectedTickets.includes(ticket) ? 'btn-primary'
                         : 'btn-success'))]"
-                        (click)="selectTicket(ticket.id)"
+                        (click)="selectTicket(ticket)"
                         [disabled]="ticket.reserve"
                         class="btn m-2"
                       >
                         {{ ticket.place.numero }}
                       </button>
+                      <div class="w-100 text-center mt-2" *ngIf="selectedTickets.length">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#payementModal" class="btn btn-warning form-control">
+                          <i class="fas fa-money-check"></i>
+                           Payer ({{ selectedTickets.length }} tickets)
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -91,6 +96,29 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade " id="payementModal" tabindex="-1" aria-labelledby="payementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form #form="ngForm" (ngSubmit)="payerTicket(form)" class="p-3">
+          <div class="form-floating mb-3">
+            <input ngModel name="nomClient" type="text" class="form-control" id="nomClient" placeholder="Nom de Client">
+            <label for="nomClient">Nom de Client</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input ngModel name="codePayement" type="number" class="form-control" id="codePayement" placeholder="Code de Payement">
+            <label for="codePayement">Code de Payement</label>
+          </div>
+          <div class="modal-footer">
+            <button #closeModal type="button" class="btn btn-light border border-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-money-check me-1"></i>
+               Payer ({{ selectedTickets.length }} tickets)
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
