@@ -1,1 +1,51 @@
-<p>signup works!</p>
+<div class="row align-items-center h-100 w-100">
+  <div class="card col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-4 bg-dark">
+    <div class="card-header">
+      <span class="title">Sign in</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger p-2" *ngIf="error">
+        <span><i class="fas fa-info-circle"></i> {{ error }}</span>
+      </div>
+      <form #form="ngForm" (ngSubmit)="signup(form.value)" class="text-dark">
+        <div class="row m-0">
+          <div class="form-floating p-0 pe-2 col-6 mb-3">
+            <input name="firstName" ngModel type="text" class="form-control" id="firstName" placeholder="First Name">
+            <label for="firstName">First Name</label>
+          </div>
+          <div class="form-floating p-0 ps-2 col-6 mb-3">
+            <input name="lastName" ngModel type="text" class="form-control" id="lastName" placeholder="Last Name">
+            <label for="lastName">Last Name</label>
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <input name="email" ngModel type="email" class="form-control" id="email" placeholder="E-mail">
+          <label for="email">E-mail</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input name="password" ngModel type="password" class="form-control" id="password" placeholder="Password">
+          <label for="password">Password</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input name="passwordConfirmation" ngModel type="password" class="form-control" id="passwordConfirmation" placeholder="Password Confirmation">
+          <label for="passwordConfirmation">Password Confirmation</label>
+        </div>
+        <button type="submit" class="btn btn-danger form-control">
+          <span class="mx-1" *ngIf="signupLoading">
+            <i class="fas fa-circle-notch fa-spin"></i>
+          </span>
+          <span *ngIf="!signupLoading">Sign up</span>
+        </button>
+        <span class="text-white mt-3 d-block">
+          You already have an account?
+          <a
+            [routerLink]="'/auth/signin'"
+            class="signup-link"
+          >
+            Sign in
+          </a>.
+        </span>
+      </form>
+    </div>
+  </div>
+</div>

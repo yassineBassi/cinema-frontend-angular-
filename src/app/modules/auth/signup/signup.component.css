@@ -1,0 +1,12 @@
+.title{
+  font-size: 26px;
+  font-weight: bold;
+}
+.signup-link{
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+.signup-link:hover{
+  text-decoration: underline;
+}

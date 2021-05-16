@@ -14,4 +14,8 @@ export class AuthService extends DataService {
   signin(data){
     return this.sendPostRequest('/auth/signin', data)
   }
+
+  signup(data){
+    return this.sendPostRequest('/auth/signup', data);
+  }
 }

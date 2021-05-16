@@ -1,6 +1,6 @@
 import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -11,13 +11,25 @@ export class SigninComponent implements OnInit {
 
   signinLoading = false;
   error: string;
+  flashMessage;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.checkFlashMessage();
+  }
+
+  checkFlashMessage(){
+    this.route.queryParamMap
+    .subscribe(
+      query => {
+        this.flashMessage = query.get('flash');
+      }
+    )
   }
 
   signin(signinForm){
+    this.flashMessage = null
     this.error = "";
     this.signinLoading = true;
     console.log('signin');
