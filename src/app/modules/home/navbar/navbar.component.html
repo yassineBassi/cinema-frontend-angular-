@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">Cinema</a>
+        <a class="navbar-brand fw-bold" href="#">Cinema</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a
@@ -17,10 +17,28 @@
               Home
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href=""
+            >
+              <i class="fas fa-th me-1"></i>
+              Dashboard
+            </a>
+          </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <button class="btn btn-danger">Login</button>
+          <li class="nav-item mx-1" *ngIf="!user">
+            <button [routerLink]="'/auth/signup'" class="btn btn-danger">Sign up</button>
+          </li>
+          <li class="nav-item mx-1" *ngIf="!user">
+            <button [routerLink]="'/auth/signin'" class="btn btn-outline-light">Sign in</button>
+          </li>
+          <li class="nav-item mx-3 text-white d-flex align-items-center" *ngIf="user">
+            <span><i class="fas fa-user mx-2"></i>{{ user.firstName + " " + user.lastName }}</span>
+          </li>
+          <li class="nav-item mx-1" *ngIf="user">
+            <button (click)="signout()" class="btn btn-outline-light">Sign out</button>
           </li>
         </ul>
       </div>

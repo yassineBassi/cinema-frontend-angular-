@@ -30,9 +30,10 @@ export class CinemaComponent implements OnInit {
     this.cinemaService.getVilles()
     .subscribe(
       (resp: any) => {
+        console.log(resp);
+
         this.villes = resp._embedded.villes;
         this.getCinemas(this.villes[0])
-        console.log(this.villes);
       },
       err => {
         console.log(err);

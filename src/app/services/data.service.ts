@@ -1,16 +1,38 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'head' | 'delete' | 'upload' | 'download';
+type HttpSerializer = 'json' | 'urlencoded' | 'utf8' | 'multipart' | 'raw';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  url = 'http://127.0.0.1:8080';
+  public url = 'http://127.0.0.1:8080';
 
-  constructor(private http: HttpClient) { }
+  constructor(protected http: HttpClient) { }
 
-  getVilles(){
-    return this.http.get(this.url + '/villes');
+  header(){
+    const token = window.localStorage.getItem('token')
+    return token ? {
+      'Authorization': 'Bearer ' + token
+    } : null;
+  }
+
+  sendGetRequest(url: string, params: any, fullUrl = false){
+    return this.http.get(fullUrl ? url : this.url + url, {
+      params,
+      headers: {
+        ...this.header()
+      }
+    });
+  }
+
+  sendPostRequest(url: string, data: any, fullUrl = false){
+    return this.http.post(fullUrl ? url : this.url + url, data, {
+      headers: {
+        ...this.header()
+      },
+    });
   }
 }

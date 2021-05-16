@@ -1,38 +1,40 @@
+import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CinemaService {
+export class CinemaService extends DataService {
 
-  public url = 'http://127.0.0.1:8080';
-
-  constructor(private http: HttpClient) { }
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
   getVilles(){
-    return this.http.get(this.url + '/villes');
+    return this.sendGetRequest('/villes', null);
   }
 
   getCinemas(ville){
-    return this.http.get(ville._links.cinemas.href)
+    return this.sendGetRequest(ville._links.cinemas.href, null, true);
   }
 
   getSalles(cinema){
-    return this.http.get(cinema._links.salles.href)
+    return this.sendGetRequest(cinema._links.salles.href, null, true);
   }
 
   getProjection(salle){
     let url = salle._links.projections.href.replace('{?projection}', '') + "?projection=p1";
-    return this.http.get(url);
+    return this.sendGetRequest(url, null, true);
   }
 
-  getPlaces(projection){
-    return this.http.get(projection.links.places.hre);
-  }
+  // getPlaces(projection){
+  //   return this.sendGetRequest(projection.links.places.href, null);
+  //   return this.http.get(projection.links.places.href);
+  // }
 
   payerTicket(data){
-    return this.http.post(this.url + '/tickets/payer', data);
+    return this.sendPostRequest('/tickets/payer', data);
   }
 
 }

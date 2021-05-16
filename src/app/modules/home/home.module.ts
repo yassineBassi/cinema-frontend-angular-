@@ -1,3 +1,5 @@
+import { NavbarComponent } from './navbar/navbar.component';
+import { SharesModule } from './../shares/shares.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,13 +12,15 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     HomeComponent,
-    CoverComponent,
     CinemaComponent,
+    CoverComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    SharesModule
   ],
 })
 export class HomeModule { }
