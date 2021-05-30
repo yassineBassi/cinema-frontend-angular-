@@ -61,13 +61,13 @@
                       >
                         <div class="row">
                           <div class="col-5">
-                            {{ projection.seance.heurDebut | date: 'HH:mm:ss a' }}
+                            {{ projection.seance.startHour | date: 'HH:mm:ss a' }}
                           </div>
                           <div class="col-2">
                             <i class="fas fa-arrow-right"></i>
                           </div>
                           <div class="col-5">
-                            {{ projection.prix | number: '1.2'}} DH
+                            {{ projection.price | number: '1.2'}} DH
                           </div>
                         </div>
                       </li>
@@ -81,7 +81,7 @@
                         [disabled]="ticket.reserve"
                         class="btn m-2"
                       >
-                        {{ ticket.place.numero }}
+                        {{ ticket.place.number }}
                       </button>
                       <div class="w-100 text-center mt-2" *ngIf="selectedTickets.length">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#payementModal" class="btn btn-warning form-control">
@@ -104,12 +104,12 @@
       <div class="modal-content">
         <form #form="ngForm" (ngSubmit)="payerTicket(form)" class="p-3">
           <div class="form-floating mb-3">
-            <input ngModel name="nomClient" type="text" class="form-control" id="nomClient" placeholder="Nom de Client">
-            <label for="nomClient">Nom de Client</label>
+            <input ngModel name="clientName" type="text" class="form-control" id="clientName" placeholder="Nom de Client">
+            <label for="clientName">Nom de Client</label>
           </div>
           <div class="form-floating mb-3">
-            <input ngModel name="codePayement" type="number" class="form-control" id="codePayement" placeholder="Code de Payement">
-            <label for="codePayement">Code de Payement</label>
+            <input ngModel name="codePayment" type="number" class="form-control" id="codePayment" placeholder="Code de Payement">
+            <label for="codePayment">Code de Payement</label>
           </div>
           <div class="modal-footer">
             <button #closeModal type="button" class="btn btn-light border border-secondary" data-bs-dismiss="modal">Close</button>

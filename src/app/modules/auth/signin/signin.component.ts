@@ -42,6 +42,7 @@ export class SigninComponent implements OnInit {
           resp = resp.data;
           window.localStorage.setItem("token", resp.token);
           window.localStorage.setItem("user", JSON.stringify(resp.user));
+          window.localStorage.setItem("roles", JSON.stringify(resp.roles));
           this.router.navigate(['/home']);
           this.signinLoading = false;
         }

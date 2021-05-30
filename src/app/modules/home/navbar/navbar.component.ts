@@ -1,3 +1,4 @@
+import { DataService } from './../../../services/data.service';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,10 +10,13 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit, OnChanges {
 
   @Input() user;
+  @Input() roles: string[];
+  dashboardUrl: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.dashboardUrl = this.dataService.url + "/dashboard";
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -23,6 +27,11 @@ export class NavbarComponent implements OnInit, OnChanges {
     window.localStorage.removeItem('user');
     window.localStorage.removeItem('token');
     this.router.navigate(["/auth"]);
+  }
+
+  isAdmin(){
+    console.log(this.roles);
+    return false;
   }
 
 }

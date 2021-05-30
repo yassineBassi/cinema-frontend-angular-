@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   user;
+  roles: string[];
 
   constructor() { }
 
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
 
   getUser(){
     this.user = JSON.parse(window.localStorage.getItem('user') + "");
+    this.roles = JSON.parse(window.localStorage.getItem('roles') + "");
   }
 
 }
